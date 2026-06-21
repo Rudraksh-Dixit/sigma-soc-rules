@@ -1,0 +1,27 @@
+title: PsExec Service Creation
+id: e5f6a7b8-c9d0-1234-efab-567890123456
+status: experimental
+description: Detects PsExec service creation and execution, indicating lateral movement or remote execution
+references:
+    - https://attack.mitre.org/techniques/T1021/006/
+    - https://learn.microsoft.com/en-us/sysinternals/downloads/psexec
+author: Rudraksh Dixit
+date: 2026-06-21
+tags:
+    - attack.lateral_movement
+    - attack.t1021.006
+    - attack.execution
+    - attack.s0029
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\PsExec.exe'
+    filter_help:
+        CommandLine|contains: '-h'
+    condition: selection and not filter_help
+falsepositives:
+    - Legitimate remote administration by IT teams
+    - Help desk remote troubleshooting
+level: high

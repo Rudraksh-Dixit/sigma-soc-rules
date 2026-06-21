@@ -1,0 +1,42 @@
+title: Non-Browser Process to Port 443
+id: f2a3b4c5-d6e7-8901-fabc-234567890123
+status: experimental
+description: Detects non-browser processes establishing HTTPS connections, indicative of potential C2 communication or data exfiltration
+references:
+    - https://attack.mitre.org/techniques/T1071/001/
+    - https://attack.mitre.org/techniques/T1041/
+author: Rudraksh Dixit
+date: 2026-06-21
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+    - attack.exfiltration
+    - attack.t1041
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        Initiated: 'true'
+        DestinationPort: 443
+    filter_browsers:
+        Image|endswith:
+            - '\chrome.exe'
+            - '\firefox.exe'
+            - '\msedge.exe'
+            - '\iexplore.exe'
+            - '\brave.exe'
+            - '\opera.exe'
+    filter_system:
+        Image|endswith:
+            - '\svchost.exe'
+            - '\wmiprvse.exe'
+            - '\lsass.exe'
+            - '\services.exe'
+    condition: selection and not filter_browsers and not filter_system
+falsepositives:
+    - Software update checks from legitimate applications
+    - Antivirus definition updates
+    - Cloud sync applications
+    - Development tools making API calls
+level: medium

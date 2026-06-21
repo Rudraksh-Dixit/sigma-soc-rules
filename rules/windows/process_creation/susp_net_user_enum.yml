@@ -1,0 +1,34 @@
+title: Net User Discovery
+id: c9d0e1f2-a3b4-5678-cdef-901234567890
+status: experimental
+description: Detects net.exe or net1.exe used to enumerate users or groups, commonly performed during Active Directory reconnaissance
+references:
+    - https://attack.mitre.org/techniques/T1087/001/
+    - https://attack.mitre.org/techniques/T1087/002/
+author: Rudraksh Dixit
+date: 2026-06-21
+tags:
+    - attack.discovery
+    - attack.t1087.001
+    - attack.t1087.002
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith:
+            - '\net.exe'
+            - '\net1.exe'
+        CommandLine|contains:
+            - ' user'
+            - ' group'
+            - ' localgroup'
+    filter_admin:
+        CommandLine|contains:
+            - '/domain'
+    condition: selection and not filter_admin
+falsepositives:
+    - Legitimate IT administration scripts
+    - Help desk user management
+    - System health monitoring
+level: low

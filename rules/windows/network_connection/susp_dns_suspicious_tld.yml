@@ -1,0 +1,40 @@
+title: DNS Query to Suspicious TLD
+id: e1f2a3b4-c5d6-7890-efab-123456789012
+status: experimental
+description: Detects DNS queries to suspicious top-level domains or newly registered domains, often used for C2 infrastructure
+references:
+    - https://attack.mitre.org/techniques/T1071/001/
+    - https://attack.mitre.org/techniques/T1572/
+author: Rudraksh Dixit
+date: 2026-06-21
+tags:
+    - attack.command_and_control
+    - attack.t1071.001
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        Initiated: 'true'
+        DestinationPort: 53
+        QueryName|contains:
+            - '.xyz'
+            - '.top'
+            - '.club'
+            - '.work'
+            - '.gq'
+            - '.ml'
+            - '.cf'
+            - '.tk'
+    filter_known:
+        QueryName|contains:
+            - 'google'
+            - 'cloudflare'
+            - 'microsoft'
+            - 'apple'
+    condition: selection and not filter_known
+falsepositives:
+    - Users visiting legitimate websites on less common TLDs
+    - Marketing campaigns using new TLDs
+    - Development environments
+level: medium

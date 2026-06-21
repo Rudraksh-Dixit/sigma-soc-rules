@@ -1,0 +1,21 @@
+# Sigma CLI Configuration
+# Used for rule validation and SIEM conversion
+
+targets:
+  - splunk
+  - elasticsearch
+  - wazuh
+
+options:
+  backend: default
+  output-format: default
+  ignore-warnings: false
+  strict-validation: true
+
+pipelines:
+  splunk:
+    backend: splunk
+    pipeline: splunk_windows
+  elasticsearch:
+    backend: elasticsearch
+    pipeline: es_rule

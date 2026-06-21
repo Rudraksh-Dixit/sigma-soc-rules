@@ -1,0 +1,42 @@
+title: Suspicious PowerShell - Encoded Command
+id: e9a8f5d0-3b2c-4a7d-9f1e-6d5b8c3a2f1d
+status: experimental
+description: Detects PowerShell execution with encoded command flag, commonly used by adversaries to obfuscate payload execution
+references:
+    - https://attack.mitre.org/techniques/T1059/001/
+    - https://lolbas-project.github.io/lolbas/Binaries/Powershell/
+author: Rudraksh Dixit
+date: 2026-06-21
+modified: 2026-06-21
+tags:
+    - attack.execution
+    - attack.t1059.001
+    - attack.defense_evasion
+    - attack.t1027
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith:
+            - '\powershell.exe'
+            - '\pwsh.exe'
+        CommandLine|contains:
+            - '-enc'
+            - '-encodedcommand'
+            - '-e '
+            - '-e$'
+            - ' -e '
+    filter_known_admin:
+        CommandLine|contains:
+            - 'PDQ'
+            - 'SCCM'
+            - 'Ansible'
+            - 'Chef'
+            - 'Puppet'
+    condition: selection and not filter_known_admin
+falsepositives:
+    - Administrative scripts using encoded commands for legitimate reasons
+    - Configuration management tools (PDQ, SCCM, Ansible)
+    - Software deployment automation
+level: high

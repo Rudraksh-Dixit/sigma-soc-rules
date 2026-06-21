@@ -1,0 +1,42 @@
+title: File Modified in Suspicious Locations
+id: a3b4c5d6-e7f8-9012-abcd-345678901234
+status: experimental
+description: Detects file modifications in suspicious directories commonly used for payload staging and persistence
+references:
+    - https://attack.mitre.org/techniques/T1105/
+    - https://attack.mitre.org/techniques/T1074/
+author: Rudraksh Dixit
+date: 2026-06-21
+tags:
+    - attack.command_and_control
+    - attack.t1105
+    - attack.collection
+    - attack.t1074
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        Image|endswith:
+            - '\powershell.exe'
+            - '\cmd.exe'
+            - '\wscript.exe'
+            - '\cscript.exe'
+        TargetFilename|contains:
+            - '\AppData\Local\Temp\'
+            - '\Users\Public\'
+            - '\Windows\Temp\'
+            - 'Desktop\'
+        TargetFilename|endswith:
+            - '.exe'
+            - '.dll'
+            - '.ps1'
+            - '.vbs'
+            - '.bat'
+            - '.scr'
+    condition: selection
+falsepositives:
+    - Software installers extracting files to temp directories
+    - User downloading and saving files to Desktop
+    - Legitimate scripts writing temporary files
+level: medium

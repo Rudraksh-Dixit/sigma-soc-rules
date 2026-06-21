@@ -1,0 +1,27 @@
+title: BITSAdmin Download
+id: f6a7b8c9-d0e1-2345-fabc-678901234567
+status: experimental
+description: Detects BITSAdmin tool used to download files, commonly abused by adversaries for payload staging and C2 communication
+references:
+    - https://attack.mitre.org/techniques/T1197/
+    - https://lolbas-project.github.io/lolbas/Binaries/Bitsadmin/
+author: Rudraksh Dixit
+date: 2026-06-21
+tags:
+    - attack.defense_evasion
+    - attack.t1197
+    - attack.command_and_control
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\bitsadmin.exe'
+        CommandLine|contains|all:
+            - '/transfer'
+            - 'http'
+    condition: selection
+falsepositives:
+    - Legitimate BITS transfers for Windows updates
+    - System management tools using BITS for bandwidth-efficient transfers
+level: medium

@@ -1,0 +1,24 @@
+# Sigma SOC Rules
+# Detection engineering portfolio project
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Environment
+.venv/
+env/
+venv/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

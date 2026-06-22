@@ -7,7 +7,7 @@
 
 A collection of production-quality Sigma detection rules I wrote, tested, and tuned. Each rule targets a specific MITRE ATT&CK technique, includes false positive considerations, and was validated using Atomic Red Team simulations in a live Wazuh/ELK SOC lab.
 
-This is not a copy-paste of the Sigma public repo. Every rule here was written by analyzing real adversary behavior — encoded PowerShell, LSASS dumping via procdump, certutil living-off-the-land, WMI lateral movement, and more.
+This is not a copy-paste of the Sigma public repo. Every rule here was written by analyzing real adversary behavior — encoded PowerShell, LSASS dumping via procdump, certutil living-off-the-land, WMI lateral movement, and more
 
 ## Rule Index
 
